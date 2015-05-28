@@ -1,0 +1,16 @@
+#!/bin/bash
+EXITCODE=0
+
+for SCRIPT in $(dirname "$0")/tests/*.sh
+do
+  if [ -f $SCRIPT ]
+  then
+    $SCRIPT
+    if [ $? -ne 0 ]
+    then
+      EXITCODE=$((EXITCODE+1))
+    fi
+  fi
+done
+
+exit $EXITCODE
