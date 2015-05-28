@@ -12,7 +12,7 @@ COPY ./tests /root/tests
 COPY ./run.sh /root/run.sh
 RUN ls -al /root
 RUN ls -al /root/tests
-RUN chmod a+x /root/tests/*.sh && chmod a+x /root/run.sh
+RUN chmod a+x /root/tests/* && chmod a+x /root/run.sh
 RUN /root/run.sh && rm -rf /root/tests/ && rm -rf /root/run.sh
 
 CMD [ "/bin/bash" ]
