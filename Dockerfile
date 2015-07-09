@@ -7,12 +7,10 @@ RUN apk add --update bash && rm -rf /var/cache/apk/*
 ENV PS1="\\[\\033[01;32m\\]\\u@\\h\\[\\033[01;34m\\] \\w \\$\\[\\033[00m\\] " \
   TERM="xterm-color"
 
-#RUN mkdir -p ~/tests
-COPY ./tests /root/tests
-COPY ./run.sh /root/run.sh
-RUN ls -al /root
-RUN ls -al /root/tests
-RUN chmod a+x /root/tests/* && chmod a+x /root/run.sh
-RUN /root/run.sh && rm -rf /root/tests/ && rm -rf /root/run.sh
+RUN mkdir -p /opt/bin /opt/var/cveck
+COPY ./tests /opt/var/cveck
+COPY ./cveck /opt/bin/cveck
+RUN chmod a+x /opt/var/cveck/*_test.sh && chmod a+x /opt/bin/cveck
+RUN /opt/bin/cveck
 
 CMD [ "/bin/bash" ]
