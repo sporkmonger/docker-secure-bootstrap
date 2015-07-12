@@ -17,10 +17,6 @@ LIBSSL_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libssl[^-]*-[0-9]\{0,3\}\.[
 if [[ (PRUNED_APK_CACHE -eq 1) ]]; then
   rm -rf /var/cache/apk/*
 fi
-echo "openssl: $OPENSSL_VERSION"
-echo "openssl libraries: $OPENSSL_LIB_VERSION"
-echo "libcrypto: $LIBCRYPTO_VERSION"
-echo "libssl: $LIBSSL_VERSION"
 # Test libssl and libcrypto even if openssl isn't installed
 # The libssl and libcrypto libraries will always have the
 # same version number, so the extra elif is really just
@@ -179,6 +175,7 @@ echo "$OPENSSL_VULNERABILITY_LIST" | gawk -v RS='<dt>' '
 '
 if [ $? -ne 0 ]
 then
+  echo "OpenSSL Version: \033[91m$OPENSSL_VERSION\033[39m"
   EXITCODE=$((EXITCODE+1))
 fi
 
