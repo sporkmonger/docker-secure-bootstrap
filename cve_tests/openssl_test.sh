@@ -3,7 +3,7 @@ EXITCODE=0
 
 # These version checks are far from truly reliable.
 CURL_VERSION=$(`which curl` -V 2>&1 | grep -o -m 1 -e "curl [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
-WGET_VERSION=$(`which wget` -V 2>&1 | grep -o -m 1 -e "[wW]get [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
+WGET_VERSION=$(`which wget` -V 2>&1 | grep -o -m 1 -e ".* v*[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
 OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 OPENSSL_LIB_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "Library: OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 LIBCRYPTO_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libcrypto[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
@@ -22,9 +22,9 @@ fi
 if [ ! -z $CURL_VERSION ]; then
   OPENSSL_VULNERABILITY_LIST=`curl -sS https://www.openssl.org/news/vulnerabilities.html`
 elif [ ! -z $WGET_VERSION ]; then
-  OPENSSL_VULNERABILITY_LIST=`wget -q --no-check-certificate -O - https://www.openssl.org/news/vulnerabilities.html`
+  OPENSSL_VULNERABILITY_LIST=`wget -q -O - http://www.openssl.org/news/vulnerabilities.html`
 else
-  echo -e "\033[91mneither curl nor wget is not installed\033[39m"
+  echo -e "\033[91mneither curl nor wget is installed\033[39m"
   exit 1
 fi
 
