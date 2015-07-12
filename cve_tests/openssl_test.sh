@@ -44,6 +44,8 @@ else
 fi
 
 if [[ ("$OPENSSL_VERSION" == "") ]]; then
+  apk update
+  apk version
   echo "$OPENSSL_VERSION $OPENSSL_LIB_VERSION $LIBSSL_VERSION $LIBCRYPTO_VERSION"
   echo -e "\033[91mno openssl version number to check against\033[39m"
   exit 1
