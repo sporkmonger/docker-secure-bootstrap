@@ -21,16 +21,6 @@ echo "openssl: $OPENSSL_VERSION"
 echo "openssl libraries: $OPENSSL_LIB_VERSION"
 echo "libcrypto: $LIBCRYPTO_VERSION"
 echo "libssl: $LIBSSL_VERSION"
-if [[ ("$OPENSSL_LIB_VERSION" != "") && ("$OPENSSL_VERSION" != "$OPENSSL_LIB_VERSION") ]]; then
-  echo -e "\033[91mopenssl and library versions differ ($OPENSSL_VERSION/$OPENSSL_LIB_VERSION) \033[39m"
-  EXITCODE=1
-elif [[ ("$LIBCRYPTO_VERSION" != "") && ("$OPENSSL_VERSION" != "$LIBCRYPTO_VERSION") ]]; then
-  echo -e "\033[91mopenssl and libcrypto versions differ ($OPENSSL_VERSION/$LIBCRYPTO_VERSION) \033[39m"
-  EXITCODE=1
-elif [[ ("$LIBSSL_VERSION" != "") && ("$OPENSSL_VERSION" != "$LIBSSL_VERSION") ]]; then
-  echo -e "\033[91mopenssl and libssl versions differ ($OPENSSL_VERSION/$LIBSSL_VERSION) \033[39m"
-  EXITCODE=1
-fi
 # Test libssl and libcrypto even if openssl isn't installed
 # The libssl and libcrypto libraries will always have the
 # same version number, so the extra elif is really just
@@ -40,6 +30,18 @@ if [[ ("$OPENSSL_VERSION" == "") ]]; then
     OPENSSL_VERSION="$LIBSSL_VERSION"
   elif [[ ("$LIBCRYPTO_VERSION" != "") ]]; then
     OPENSSL_VERSION="$LIBCRYPTO_VERSION"
+  fi
+else
+  # OpenSSL is present, so now make sure we don't have anything out of sync.
+  if [[ ("$OPENSSL_LIB_VERSION" != "") && ("$OPENSSL_VERSION" != "$OPENSSL_LIB_VERSION") ]]; then
+    echo -e "\033[91mopenssl and library versions differ ($OPENSSL_VERSION/$OPENSSL_LIB_VERSION) \033[39m"
+    EXITCODE=1
+  elif [[ ("$LIBCRYPTO_VERSION" != "") && ("$OPENSSL_VERSION" != "$LIBCRYPTO_VERSION") ]]; then
+    echo -e "\033[91mopenssl and libcrypto versions differ ($OPENSSL_VERSION/$LIBCRYPTO_VERSION) \033[39m"
+    EXITCODE=1
+  elif [[ ("$LIBSSL_VERSION" != "") && ("$OPENSSL_VERSION" != "$LIBSSL_VERSION") ]]; then
+    echo -e "\033[91mopenssl and libssl versions differ ($OPENSSL_VERSION/$LIBSSL_VERSION) \033[39m"
+    EXITCODE=1
   fi
 fi
 
