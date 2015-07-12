@@ -18,6 +18,22 @@ elif [[ ("$LIBSSL_VERSION" != "") && ("$OPENSSL_VERSION" != "$LIBSSL_VERSION") ]
   echo -e "\033[91mopenssl and libssl versions differ ($OPENSSL_VERSION/$LIBSSL_VERSION) \033[39m"
   EXITCODE=1
 fi
+# Test libssl and libcrypto even if openssl isn't installed
+# The libssl and libcrypto libraries will always have the
+# same version number, so the extra elif is really just
+# defensive coding.
+if [[ ("$OPENSSL_VERSION" == "") ]]; then
+  if [[ ("$LIBSSL_VERSION" != "") ]]; then
+    OPENSSL_VERSION="$LIBSSL_VERSION"
+  elif [[ ("$LIBCRYPTO_VERSION" != "") ]]; then
+    OPENSSL_VERSION="$LIBCRYPTO_VERSION"
+  fi
+fi
+
+if [[ ("$OPENSSL_VERSION" == "") ]]; then
+  echo -e "\033[91mno openssl version number to check against\033[39m"
+  exit 1
+fi
 
 if [ ! -z $CURL_VERSION ]; then
   OPENSSL_VULNERABILITY_LIST=`curl -sS https://www.openssl.org/news/vulnerabilities.html`
