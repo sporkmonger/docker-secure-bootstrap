@@ -2,12 +2,21 @@
 EXITCODE=0
 
 # These version checks are far from truly reliable.
+# Currently only testing them against Alpine, CoreOS, & OS X.
 CURL_VERSION=$(`which curl` -V 2>&1 | grep -o -m 1 -e "curl [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
-WGET_VERSION=$(`which wget` -V 2>&1 | grep -o -m 1 -e ".* v*[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
+WGET_VERSION=$(`which wget` -V 2>&1 | grep -o -m 1 -e "[wWbB][gu][es][ty][bBox]* v*[0-9\.]\{1,9\}[^- ]*" | grep -o -m 1 -e "[0-9\.]\{1,9\}[^- ]*")
 OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 OPENSSL_LIB_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "Library: OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
+PRUNED_APK_CACHE=0
+if [[ (`apk version 2>&1` =~ "No such file or directory") ]]; then
+  apk update
+  PRUNED_APK_CACHE=1
+fi
 LIBCRYPTO_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libcrypto[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 LIBSSL_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libssl[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
+if [[ (PRUNED_APK_CACHE -eq 1) ]]; then
+  rm -rf /var/cache/apk/*
+fi
 echo "openssl: $OPENSSL_VERSION"
 echo "openssl libraries: $OPENSSL_LIB_VERSION"
 echo "libcrypto: $LIBCRYPTO_VERSION"
