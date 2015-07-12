@@ -22,7 +22,9 @@ fi
 # same version number, so the extra elif is really just
 # defensive coding.
 if [[ ("$OPENSSL_VERSION" == "") ]]; then
-  if [[ ("$LIBSSL_VERSION" != "") ]]; then
+  if [[ ("$OPENSSL_LIB_VERSION" != "") ]]; then
+    OPENSSL_VERSION="$OPENSSL_LIB_VERSION"
+  elif [[ ("$LIBSSL_VERSION" != "") ]]; then
     OPENSSL_VERSION="$LIBSSL_VERSION"
   elif [[ ("$LIBCRYPTO_VERSION" != "") ]]; then
     OPENSSL_VERSION="$LIBCRYPTO_VERSION"
@@ -42,6 +44,7 @@ else
 fi
 
 if [[ ("$OPENSSL_VERSION" == "") ]]; then
+  echo "$OPENSSL_VERSION $OPENSSL_LIB_VERSION $LIBSSL_VERSION $LIBCRYPTO_VERSION"
   echo -e "\033[91mno openssl version number to check against\033[39m"
   exit 1
 fi
