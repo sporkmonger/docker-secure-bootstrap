@@ -5,7 +5,7 @@ EXITCODE=0
 # These version checks are far from truly reliable.
 LIBCRYPTO_VERSION=$(apk info libcrypto1.0 2>&1 | grep -o -m 1 -e "\d\.\d\.\d[^- ]*")
 LIBSSL_VERSION=$(apk info libssl1.0 2>&1 | grep -o -m 1 -e "\d\.\d\.\d[^- ]*")
-OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "\d\.\d\.\d[^- ]*")
+OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 
 CVE20140160_LIBCRYPTO=$(echo $LIBCRYPTO_VERSION 2>&1 | grep "1\.0\.1[ abcdef]" | wc -l)
 
