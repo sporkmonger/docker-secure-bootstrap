@@ -27,6 +27,10 @@ else
   echo -e "\033[91mneither curl nor wget is installed\033[39m"
   exit 1
 fi
+if [[ ! "$OPENSSL_VULNERABILITY_LIST" =~ "OpenSSL vulnerabilities" ]]; then
+  echo -e "\033[91munexpected response from http://www.openssl.org/news/vulnerabilities.html\033[39m"
+  exit 1
+fi
 
 echo "$OPENSSL_VULNERABILITY_LIST" | gawk -v RS='<dt>' '
   BEGIN { ORS="\t" }
