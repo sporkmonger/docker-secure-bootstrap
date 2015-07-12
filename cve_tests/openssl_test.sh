@@ -141,7 +141,7 @@ if [ ! -z $CURL_VERSION ]; then
     EXITCODE=$((EXITCODE+1))
   fi
 else
-  echo -e "\033[92mcurl is not installed\033[39m"
+  echo -e "\033[93mcurl is not installed\033[39m"
 fi
 
 exit $EXITCODE
