@@ -3,6 +3,7 @@ MAINTAINER Bob Aman <bob@sporkmonger.com>
 
 RUN apk add --update bash gawk && \
   apk upgrade && \
+  apk version && \
   rm -rf /var/cache/apk/*
 
 # I just can't deal with terminals that don't have pretty colors.
