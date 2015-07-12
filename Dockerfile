@@ -2,7 +2,7 @@ FROM alpine:latest
 MAINTAINER Bob Aman <bob@sporkmonger.com>
 
 RUN apk add --update bash gawk && \
-  apk upgrade libcrypto1.0 libssl1.0 && \
+  apk upgrade && \
   rm -rf /var/cache/apk/*
 
 # I just can't deal with terminals that don't have pretty colors.
