@@ -175,7 +175,7 @@ echo "$OPENSSL_VULNERABILITY_LIST" | gawk -v RS='<dt>' '
 '
 if [ $? -ne 0 ]
 then
-  echo "OpenSSL Version: \033[91m$OPENSSL_VERSION\033[39m"
+  echo -e "OpenSSL Version: \033[91m$OPENSSL_VERSION\033[39m"
   EXITCODE=$((EXITCODE+1))
 fi
 
