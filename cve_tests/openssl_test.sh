@@ -3,7 +3,17 @@ EXITCODE=0
 
 # These version checks are far from truly reliable.
 OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
+OPENSSL_LIB_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "Library: OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 CURL_VERSION=$(`which curl` -V 2>&1 | grep -o -m 1 -e "curl [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
+if [ "$OPENSSL_LIB_VERSION" == "" ]; then
+  OPENSSL_LIB_VERSION="$OPENSSL_VERSION"
+elif [ ! -z $OPENSSL_LIB_VERSION ]; then
+  OPENSSL_LIB_VERSION="$OPENSSL_VERSION"
+fi
+if [ "$OPENSSL_VERSION" != "$OPENSSL_LIB_VERSION" ]; then
+  echo -e "\033[91mopenssl and library versions differ ($OPENSSL_VERSION/$OPENSSL_LIB_VERSION) \033[39m"
+  EXITCODE=1
+fi
 
 if [ ! -z $CURL_VERSION ]; then
   # OPENSSL_VULNERABILITY_LIST=`
