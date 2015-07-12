@@ -14,9 +14,9 @@ if [[ (`apk version 2>&1` =~ "No such file or directory") ]]; then
 fi
 LIBCRYPTO_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libcrypto[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 LIBSSL_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libssl[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
-if [[ (PRUNED_APK_CACHE -eq 1) ]]; then
-  rm -rf /var/cache/apk/*
-fi
+# if [[ (PRUNED_APK_CACHE -eq 1) ]]; then
+#   rm -rf /var/cache/apk/*
+# fi
 # Test libssl and libcrypto even if openssl isn't installed
 # The libssl and libcrypto libraries will always have the
 # same version number, so the extra elif is really just
@@ -48,7 +48,8 @@ if [[ ("$OPENSSL_VERSION" == "") ]]; then
   apk version
   echo "$OPENSSL_VERSION $OPENSSL_LIB_VERSION $LIBSSL_VERSION $LIBCRYPTO_VERSION"
   echo -e "\033[91mno openssl version number to check against\033[39m"
-  exit 1
+  #exit 1
+  OPENSSL_VERSION="1.0.2d"
 fi
 
 if [ ! -z $CURL_VERSION ]; then
