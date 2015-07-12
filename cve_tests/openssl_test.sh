@@ -2,7 +2,7 @@
 EXITCODE=0
 
 # These version checks are far from truly reliable.
-OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "\d\+\.\d\+\.\d\+[^- ]*")
+OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 CURL_VERSION=$(`which curl` -V 2>&1 | grep -o -m 1 -e "curl [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}")
 
 if [ ! -z $CURL_VERSION ]; then
