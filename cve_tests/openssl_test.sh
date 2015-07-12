@@ -7,16 +7,8 @@ CURL_VERSION=$(`which curl` -V 2>&1 | grep -o -m 1 -e "curl [0-9]\{0,3\}\.[0-9]\
 WGET_VERSION=$(`which wget` -V 2>&1 | grep -o -m 1 -e "[wWbB][gu][es][ty][bBox]* v*[0-9\.]\{1,9\}[^- ]*" | grep -o -m 1 -e "[0-9\.]\{1,9\}[^- ]*")
 OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 OPENSSL_LIB_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "Library: OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
-PRUNED_APK_CACHE=0
-if [[ (`apk version 2>&1` =~ "No such file or directory") ]]; then
-  apk update > /dev/null
-  PRUNED_APK_CACHE=1
-fi
-LIBCRYPTO_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libcrypto[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
-LIBSSL_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libssl[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
-# if [[ (PRUNED_APK_CACHE -eq 1) ]]; then
-#   rm -rf /var/cache/apk/*
-# fi
+LIBCRYPTO_VERSION=$(apk info libcrypto1.0 2>&1 | grep -o -m 1 -e "libcrypto[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
+LIBSSL_VERSION=$(apk info libssl1.0 2>&1 | grep -o -m 1 -e "libssl[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 # Test libssl and libcrypto even if openssl isn't installed
 # The libssl and libcrypto libraries will always have the
 # same version number, so the extra elif is really just
@@ -44,12 +36,8 @@ else
 fi
 
 if [[ ("$OPENSSL_VERSION" == "") ]]; then
-  apk update
-  apk version
-  echo "$OPENSSL_VERSION $OPENSSL_LIB_VERSION $LIBSSL_VERSION $LIBCRYPTO_VERSION"
   echo -e "\033[91mno openssl version number to check against\033[39m"
-  #exit 1
-  OPENSSL_VERSION="1.0.2d"
+  exit 1
 fi
 
 if [ ! -z $CURL_VERSION ]; then
