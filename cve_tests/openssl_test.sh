@@ -8,6 +8,10 @@ OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]
 OPENSSL_LIB_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "Library: OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 LIBCRYPTO_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libcrypto[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
 LIBSSL_VERSION=$(apk version 2>&1 | grep -o -m 1 -e "libssl[^-]*-[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*"  | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
+echo "openssl: $OPENSSL_VERSION"
+echo "openssl libraries: $OPENSSL_LIB_VERSION"
+echo "libcrypto: $LIBCRYPTO_VERSION"
+echo "libssl: $LIBSSL_VERSION"
 if [[ ("$OPENSSL_LIB_VERSION" != "") && ("$OPENSSL_VERSION" != "$OPENSSL_LIB_VERSION") ]]; then
   echo -e "\033[91mopenssl and library versions differ ($OPENSSL_VERSION/$OPENSSL_LIB_VERSION) \033[39m"
   EXITCODE=1
