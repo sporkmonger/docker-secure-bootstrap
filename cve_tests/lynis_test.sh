@@ -2,7 +2,7 @@
 EXITCODE=0
 
 cd /opt/bin/lynis
-/opt/bin/lynis -Q audit system < /dev/null
+/opt/bin/lynis/lynis -Q audit system < /dev/null
 if [ $? -ne 0 ]
 then
   EXITCODE=$((EXITCODE+1))
