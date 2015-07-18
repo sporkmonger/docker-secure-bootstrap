@@ -10,10 +10,11 @@ RUN apk add --update bash gawk wget && \
 ENV PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] " \
   TERM="xterm-color"
 
-RUN mkdir -p /opt/bin /opt/bin/cve_tests
+RUN mkdir -p /opt/bin /opt/include /opt/bin/cve_tests
 COPY ./cve_tests /opt/bin/cve_tests
 COPY ./cveck /opt/bin/cveck
 COPY ./lynis /opt/bin/lynis
+COPY ./lynis/include /opt/include/lynis
 RUN chmod a+x /opt/bin/cve_tests/*_test.sh && chmod a+x /opt/bin/cveck
 RUN /opt/bin/cveck
 
