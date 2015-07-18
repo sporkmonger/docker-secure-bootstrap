@@ -10,6 +10,8 @@ RUN apk add --update bash gawk wget && \
 ENV PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] " \
   TERM="xterm-color"
 
+RUN echo -e "# Not that this is a real concern, but protect single user mode\nsu:S:wait:/sbin/sulogin" >> /etc/inittab
+
 RUN mkdir -p /opt/bin /opt/include /opt/bin/cve_tests
 COPY ./cve_tests /opt/bin/cve_tests
 COPY ./cveck /opt/bin/cveck
