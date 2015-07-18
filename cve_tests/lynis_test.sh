@@ -1,6 +1,6 @@
 #!/bin/bash
 EXITCODE=0
 
-/opt/bin/lynis/lynis audit system -Q
+cd /opt/bin/lynis && lynis -Q audit system < /dev/null && cd -
 
 exit $EXITCODE
