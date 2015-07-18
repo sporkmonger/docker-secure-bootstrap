@@ -7,6 +7,6 @@ if [ $? -ne 0 ]
 then
   EXITCODE=$((EXITCODE+1))
 fi
-cd -
+cd - > /dev/null
 
 exit $EXITCODE
