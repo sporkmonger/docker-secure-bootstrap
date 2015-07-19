@@ -21,7 +21,7 @@ RUN cd /opt/src/firejail && \
   cd firejail-0.9.26 && \
   apk add --update make gcc g++ && \
   ./configure && \
-  make &&
+  make && \
   make install && \
   apk del make gcc g++ && \
   rm -rf /var/cache/apk/*
