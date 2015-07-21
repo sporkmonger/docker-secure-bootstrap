@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #########################################################################
 #
@@ -159,9 +159,7 @@
     if [ ${SKIPTEST} -eq 0 ]; then
         FOUNDPROBLEM=0
 
-        CVE20147187=$( ((for x in {1..200}; do echo "for x$x in ; do :"; done; for x in {1..200}; do echo done; done) | bash || echo "vulnerable") | grep 'vulnerable' | wc -l)
-
-        # ))
+        CVE20147187=$(bash -c '((for x in {1..200}; do echo "for x$x in ; do :"; done; for x in {1..200}; do echo done; done) | bash || echo "vulnerable")' | grep 'vulnerable' | wc -l)
 
         if [ $CVE20147187 -gt 0 ]; then
             logtext "Result: bash is vulnerable to Shellshock."
