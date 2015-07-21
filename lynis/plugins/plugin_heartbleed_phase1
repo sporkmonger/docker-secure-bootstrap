@@ -6,8 +6,8 @@
 #-----------------------------------------------------
 # PLUGIN_AUTHOR=Bob Aman <bob@sporkmonger.com>
 # PLUGIN_CATEGORY=security
-# PLUGIN_DESC=Checks for Ghost vulnerability
-# PLUGIN_NAME=ghost
+# PLUGIN_DESC=Checks for Heartbleed vulnerability
+# PLUGIN_NAME=heartbleed
 # PLUGIN_REQUIRED_TESTS=
 #-----------------------------------------------------
 #########################################################################
