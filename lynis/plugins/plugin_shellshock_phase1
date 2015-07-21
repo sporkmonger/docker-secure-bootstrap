@@ -1,0 +1,218 @@
+#!/bin/sh
+
+#########################################################################
+#
+#    * DO NOT REMOVE *
+#-----------------------------------------------------
+# PLUGIN_AUTHOR=Bob Aman <bob@sporkmonger.com>
+# PLUGIN_CATEGORY=security
+# PLUGIN_DESC=Checks for Shellshock vulnerability
+# PLUGIN_NAME=shellshock
+# PLUGIN_REQUIRED_TESTS=
+#-----------------------------------------------------
+#########################################################################
+#
+#
+#
+#########################################################################
+#
+# Add custom section to screen output
+#    InsertSection "Personal Plugin"
+#
+#################################################################################
+#
+    # Test        : CUS-6271
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-6271 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE20146271=$(env 'x=() { :;}; echo vulnerable' 'BASH_FUNC_x()=() { :;}; echo vulnerable' bash -c "echo test" 2>&1 | grep 'vulnerable' | wc -l)
+
+        if [ $CVE20146271 -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-6271)" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-6271)" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : CUS-6277
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-6277 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE20146277=$((shellshocker="() { x() { _;}; x() { _;} <<a; }" bash -c date 2>/dev/null || echo vulnerable) | grep 'vulnerable' | wc -l)
+
+        # Reset broken syntax highlighting ))
+
+        if [ $CVE20146277 -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-6277)" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-6277)" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : CUS-6278
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-6278 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE20146278=$(shellshocker='() { echo vulnerable; }' bash -c shellshocker 2>/dev/null | grep 'vulnerable' | wc -l)
+
+        if [ $CVE20146278 -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-6278)" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-6278)" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : CUS-7169
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-7169 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE20147169=$((cd /tmp; rm -f /tmp/echo; env X='() { (a)=>\' bash -c "echo echo nonvuln" 2>/dev/null; [[ "$(cat echo 2> /dev/null)" == "nonvuln" ]] && echo "vulnerable" 2> /dev/null) | grep 'vulnerable' | wc -l)
+
+        # Reset broken syntax highlighting ))
+
+        if [ $CVE20147169 -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-7169)" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-7169)" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : CUS-7186
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-7186 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE20147186=$((bash -c 'true <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF <<EOF' 2>/dev/null || echo "vulnerable") | grep 'vulnerable' | wc -l)
+
+        # Reset broken syntax highlighting ))
+
+        if [ $CVE20147186 -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-7186)" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-7186)" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : CUS-7187
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-7187 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE20147187=$(((for x in {1..200}; do echo "for x$x in ; do :"; done; for x in {1..200}; do echo done; done) | bash || echo "vulnerable") | grep 'vulnerable' | wc -l)
+
+        # Reset broken syntax highlighting ))
+
+        if [ $CVE20147187 -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-7187)" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock (CVE-2014-7187)" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : CUS-7888
+    # Description : Checks to see if installed bash is vulnerable to Shellshock
+
+    # Just do check without any prerequisites
+    Register --test-no CUS-7888 --weight L --network NO --description "Checks to see if any installed bash is vulnerable to Shellshock"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        CVE2014NONE=$(env X=' () { }; echo vulnerable' bash -c 'date' | grep 'vulnerable' | wc -l)
+
+        if [ $CVE2014NONE -gt 0 ]; then
+            logtext "Result: bash is vulnerable to Shellshock."
+            ReportWarning ${TEST_NO} "H" "Vulnerable bash found."
+            FOUNDPROBLEM=1
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Shellshock" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Shellshock" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Shellshock vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+
+# Wait for keypress (unless --quick is being used)
+wait_for_keypress
+
+#EOF
