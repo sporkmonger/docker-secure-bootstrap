@@ -48,7 +48,7 @@
     # Set default to none for later testing
     INCLUDEDIR=""
     # Default paths to check (CWD as last option, in case we run from standalone)
-    tINCLUDE_TARGETS="/usr/local/include/lynis /usr/local/lynis/include /usr/share/lynis/include ./include"
+    tINCLUDE_TARGETS="/usr/local/include/lynis /usr/local/lynis/include /usr/share/lynis/include /opt/bin/lynis/include ./include"
 
     # Test from which directories we can use all functions and tests
     for I in ${tINCLUDE_TARGETS}; do if [ -d ${I} ]; then INCLUDEDIR=${I}; fi; done
