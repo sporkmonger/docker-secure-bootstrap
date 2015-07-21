@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER Bob Aman <bob@sporkmonger.com>
 
-RUN apk add --update bash gawk wget fakeroot logrotate clamav-scanner clamav-libunrar freshclam && \
+RUN apk add --update bash gawk wget fakeroot sudo logrotate clamav-scanner clamav-libunrar freshclam && \
   apk upgrade && \
   apk version && \
   rm -rf /var/cache/apk/*
@@ -17,7 +17,7 @@ RUN mkdir -p /opt/bin /opt/src
 COPY ./freshclam.conf /etc/clamav/freshclam.conf
 COPY ./clamd.conf /etc/clamav/clamd.conf
 COPY ./lynis /opt/bin/lynis
-RUN /usr/bin/freshclam && /usr/bin/clamscan -r -i /
+RUN /usr/bin/freshclam && /usr/bin/sudo /usr/bin/clamscan -r -i /
 RUN /opt/bin/lynis/lynis -Q -c --profile "/opt/bin/lynis/docker-alpine.prf" audit system < /dev/null
 
 CMD [ "/bin/bash" ]
