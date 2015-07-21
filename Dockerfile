@@ -17,7 +17,8 @@ RUN mkdir -p /opt/bin /opt/src
 COPY ./freshclam.conf /etc/clamav/freshclam.conf
 COPY ./clamd.conf /etc/clamav/clamd.conf
 COPY ./lynis /opt/bin/lynis
-RUN /usr/bin/freshclam --quiet && /usr/bin/sudo /usr/bin/clamscan -r -i --exclude-dir=/sys --exclude-dir=/proc /
+RUN /usr/bin/freshclam --quiet --daemon-notify=/etc/clamav/clamd.conf && \
+  /usr/bin/sudo /usr/bin/clamscan -r -i --exclude-dir=/sys --exclude-dir=/proc /
 RUN /opt/bin/lynis/lynis -Q -c --profile "/opt/bin/lynis/docker-alpine.prf" audit system < /dev/null
 
 CMD [ "/bin/bash" ]
