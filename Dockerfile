@@ -12,13 +12,9 @@ ENV PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] " \
 
 RUN echo -e "# Not that this is a real concern, but protect single user mode\nsu:S:wait:/sbin/sulogin" >> /etc/inittab
 
-RUN mkdir -p /opt/bin /opt/include /opt/src /opt/bin/cve_tests
+RUN mkdir -p /opt/bin /opt/src
 
-COPY ./cve_tests /opt/bin/cve_tests
-COPY ./cveck /opt/bin/cveck
 COPY ./lynis /opt/bin/lynis
-COPY ./lynis/include /opt/include/lynis
-RUN chmod a+x /opt/bin/cve_tests/*_test.sh && chmod a+x /opt/bin/cveck
-RUN /opt/bin/cveck
+RUN /opt/bin/lynis/lynis -Q -c --profile "/opt/bin/lynis/docker-alpine.prf" audit system < /dev/null
 
 CMD [ "/bin/bash" ]
