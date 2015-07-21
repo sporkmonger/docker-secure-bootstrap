@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER Bob Aman <bob@sporkmonger.com>
 
-RUN apk add --update bash gawk wget fakeroot && \
+RUN apk add --update bash gawk wget fakeroot logrotate clamav-scanner && \
   apk upgrade && \
   apk version && \
   rm -rf /var/cache/apk/*
