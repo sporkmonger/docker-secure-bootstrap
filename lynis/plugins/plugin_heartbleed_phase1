@@ -21,11 +21,11 @@
 #
 #################################################################################
 #
-    # Test        : INSE-9001
+    # Test        : CUS-5501
     # Description : Checks to see if any installed openssl crypto code is vulnerable to Heartbleed
 
     # Just do check without any prerequisites
-    Register --test-no INSE-9001 --weight L --network NO --description "Checks to see if any installed openssl crypto code is vulnerable to Heartbleed"
+    Register --test-no CUS-5501 --weight L --network NO --description "Checks to see if any installed openssl crypto code is vulnerable to Heartbleed"
     if [ ${SKIPTEST} -eq 0 ]; then
         FOUNDPROBLEM=0
 

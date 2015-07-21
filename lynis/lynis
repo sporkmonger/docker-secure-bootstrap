@@ -173,7 +173,7 @@
     # Plugin directory test
     if [ "${PLUGINDIR}" = "" ]; then
         #logtext "Result: Searching for plugindir"
-        tPLUGIN_TARGETS="/usr/local/lynis/plugins /usr/local/share/lynis/plugins /usr/share/lynis/plugins /etc/lynis/plugins ./plugins"
+        tPLUGIN_TARGETS="/usr/local/lynis/plugins /usr/local/share/lynis/plugins /usr/share/lynis/plugins /etc/lynis/plugins /opt/bin/lynis/plugins ./plugins"
         for I in ${tPLUGIN_TARGETS}; do
             if [ -d ${I} ]; then
                 PLUGINDIR=${I}
@@ -236,7 +236,7 @@
 #        echo ""
 #        echo " == ${WHITE}Databases${NORMAL} =="
 #        echo "                      Current          Latest           Status"
-#        echo "  -----------------------------------------------------------------------------"    
+#        echo "  -----------------------------------------------------------------------------"
 #        echo -n "  Malware         :   ${DB_MALWARE_CV}       ${DB_MALWARE_LV}       "
 #        if [ ${DB_MALWARE_LV} -gt ${DB_MALWARE_CV} ]; then echo "${WARNING}Outdated${NORMAL}"; else echo "${OK}Up-to-date${NORMAL}"; fi
 #        echo -n "  File perms      :   ${DB_FILEPERMS_CV}       ${DB_FILEPERMS_LV}       "
@@ -507,7 +507,7 @@
         echo "  Program version:           ${PROGRAM_version}"
         echo "  Operating system:          ${OS}"
         echo "  Operating system name:     ${OS_NAME}"
-        echo "  Operating system version:  ${OS_VERSION}" 
+        echo "  Operating system version:  ${OS_VERSION}"
         if [ ! "${OS_MODE}" = "" ]; then echo "  Operating system mode:     ${OS_MODE}"; fi
         echo "  Kernel version:            ${OS_KERNELVERSION}"
         echo "  Hardware platform:         ${HARDWARE}"

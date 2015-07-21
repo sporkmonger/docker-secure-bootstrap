@@ -92,7 +92,7 @@ plugin=software
 plugin=system-integrity
 plugin=systemd
 plugin=users
-
+plugin=heartbleed
 
 #################################################################################
 #
