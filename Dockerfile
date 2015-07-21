@@ -1,7 +1,7 @@
 FROM alpine:latest
 MAINTAINER Bob Aman <bob@sporkmonger.com>
 
-RUN apk add --update bash gawk wget && \
+RUN apk add --update bash gawk wget fakeroot && \
   apk upgrade && \
   apk version && \
   rm -rf /var/cache/apk/*
@@ -13,21 +13,6 @@ ENV PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] " \
 RUN echo -e "# Not that this is a real concern, but protect single user mode\nsu:S:wait:/sbin/sulogin" >> /etc/inittab
 
 RUN mkdir -p /opt/bin /opt/include /opt/src /opt/bin/cve_tests
-
-# firejail
-#
-# Uses key ID 2CCB36ADFC5849A7 / netblue (firejail key) <netblue30@yahoo.com>
-# for code signature, tarball hashed w/ SHA256
-COPY ./firejail /opt/src/firejail
-RUN cd /opt/src/firejail && \
-  tar -xjvf firejail-0.9.26.tar.bz2 && \
-  cd firejail-0.9.26 && \
-  apk add --update make gcc g++ linux-headers && \
-  ./configure && \
-  make && \
-  make install && \
-  apk del make gcc g++ linux-headers && \
-  rm -rf /var/cache/apk/*
 
 COPY ./cve_tests /opt/bin/cve_tests
 COPY ./cveck /opt/bin/cveck

@@ -1,0 +1,77 @@
+#!/bin/sh
+
+#########################################################################
+#
+#    * DO NOT REMOVE *
+#-----------------------------------------------------
+# PLUGIN_AUTHOR=Bob Aman <bob@sporkmonger.com>
+# PLUGIN_CATEGORY=security
+# PLUGIN_DESC=Checks for Ghost vulnerability
+# PLUGIN_NAME=ghost
+# PLUGIN_REQUIRED_TESTS=
+#-----------------------------------------------------
+#########################################################################
+#
+#
+#
+#########################################################################
+#
+# Add custom section to screen output
+#    InsertSection "Personal Plugin"
+#
+#################################################################################
+#
+    # Test        : INSE-9001
+    # Description : Checks to see if any installed openssl crypto code is vulnerable to Heartbleed
+
+    # Just do check without any prerequisites
+    Register --test-no INSE-9001 --weight L --network NO --description "Checks to see if any installed openssl crypto code is vulnerable to Heartbleed"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        FOUNDPROBLEM=0
+
+        LIBCRYPTO_VERSION=$(apk info libcrypto1.0 2>&1 | grep -o -m 1 -e "\d\.\d\.\d[^- ]*")
+        LIBSSL_VERSION=$(apk info libssl1.0 2>&1 | grep -o -m 1 -e "\d\.\d\.\d[^- ]*")
+        OPENSSL_VERSION=$(`which openssl` version 2>&1 | grep -o -m 1 -e "^OpenSSL [0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*" | grep -o -m 1 -e "[0-9]\{0,3\}\.[0-9]\{0,3\}\.[0-9]\{0,3\}[^- ]*")
+        CVE20140160_LIBCRYPTO=$(echo $LIBCRYPTO_VERSION 2>&1 | grep "1\.0\.1[ abcdef]" | wc -l)
+        CVE20140160_LIBSSL=$(echo $LIBSSL_VERSION 2>&1 | grep "1\.0\.1[ abcdef]" | wc -l)
+        CVE20140160_OPENSSL=$(echo $OPENSSL_VERSION 2>&1 | grep "1\.0\.1[ abcdef]" | wc -l)
+
+        if [ ! -z $LIBCRYPTO_VERSION ]; then
+          if [ $CVE20140160_LIBCRYPTO -gt 0 ]; then
+            logtext "Result: libcrypto $LIBCRYPTO_VERSION is vulnerable to Heartbleed."
+            ReportWarning ${TEST_NO} "H" "Vulnerable libcrypto found."
+            FOUNDPROBLEM=1
+          fi
+        fi
+
+        if [ ! -z $LIBSSL_VERSION ]; then
+          if [ $CVE20140160_LIBSSL -gt 0 ]; then
+            logtext "Result: libssl $LIBSSL_VERSION is vulnerable to Heartbleed."
+            ReportWarning ${TEST_NO} "H" "Vulnerable libssl found."
+            FOUNDPROBLEM=1
+          fi
+        fi
+
+        if [ ! -z $OPENSSL_VERSION ]; then
+          if [ $CVE20140160_OPENSSL -gt 0 ]; then
+            logtext "Result: openssl $OPENSSL_VERSION is vulnerable to Heartbleed."
+            ReportWarning ${TEST_NO} "H" "Vulnerable openssl found."
+            FOUNDPROBLEM=1
+          fi
+        fi
+
+        if [ ${FOUNDPROBLEM} -eq 0 ]; then
+            Display --indent 2 --text "- Checking for Heartbleed" --result OK --color GREEN
+          else
+            Display --indent 2 --text "- Checking for Heartbleed" --result WARNING --color RED
+            ReportWarning ${TEST_NO} "H" "Heartbleed vulnerability found"
+        fi
+    fi
+#
+#################################################################################
+#
+
+# Wait for keypress (unless --quick is being used)
+wait_for_keypress
+
+#EOF
